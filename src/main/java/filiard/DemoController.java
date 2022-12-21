@@ -1,16 +1,19 @@
 package filiard;
 
-import io.micronaut.context.annotation.Value;
-import io.micronaut.http.annotation.*;
+import io.micronaut.http.annotation.Controller;
+import io.micronaut.http.annotation.Get;
 
 @Controller("/demo")
 public class DemoController {
 
-    @Value("${feature-flag-1.enabled}")
-    boolean someValue;
+    private final FlagHelper flagHelper;
+
+    public DemoController(FlagHelper flagHelper) {
+        this.flagHelper = flagHelper;
+    }
 
     @Get(uri="/", produces="text/plain")
     public String index() {
-        return "Flag Value: " + someValue;
+        return flagHelper.createMessage();
     }
 }
